@@ -27,25 +27,17 @@ public class Node {
 	
 	////////////////// DUPLICATE DATA HANDLING ////////////////////////////////
 	
-	public int CheckForMatchingKey(String key) {
+	public int CheckForMatch(DataObject d0) {
 		int matchingKeyIndex = -1;
 		for(int i = 0; i < Size; i++) {
-			if(Data[i].compare(key) == 0) {
+			if(Data[i].compareTo(d0) == 0) {
 				matchingKeyIndex = i;
 			}
 		}
 		return matchingKeyIndex;
 	}
 	
-	public int CheckForMatchingKey(DataObject d0) {
-		int matchingKeyIndex = -1;
-		for(int i = 0; i < Size; i++) {
-			if(d0.compare(Data[i]) == 0) {
-				matchingKeyIndex = i;
-			}
-		}
-		return matchingKeyIndex;
-	}
+
 	
 	public void AddDuplicate(int matchingKeyIndex) {
 		Data[matchingKeyIndex].Count++;
@@ -319,16 +311,16 @@ public class Node {
 		if(Size == 0) {
 			Data[0] = d0;
 		} else if (Size == 1){
-			if(d0.compare(Data[0]) > 0) {
+			if(d0.compareTo(Data[0]) > 0) {
 				Data[1] = d0;
 			} else {
 				MoveDataObject(0, 1);
 				Data[0] = d0;
 			}
 		} else if (Size == 2) {
-			if (d0.compare(Data[1]) > 0) {
+			if (d0.compareTo(Data[1]) > 0) {
 				Data[2] = d0;
-			} else if (d0.compare(Data[0]) > 0) {
+			} else if (d0.compareTo(Data[0]) > 0) {
 				MoveDataObject(1,2);
 				Data[1] = d0;
 			} else {
@@ -429,13 +421,13 @@ public class Node {
 	
 	public int GetIndexOfChildToInsertDataObject(DataObject d0) {
 		int nextChild = -1;
-		if(d0.compare(Data[0]) < 0) {
+		if(d0.compareTo(Data[0]) < 0) {
 			nextChild = 0;
 		} else {
 			if(Size == 1) {
 				nextChild = 1;
 			} else { //Size == 2
-				if(d0.compare(Data[1]) > 0) {
+				if(d0.compareTo(Data[1]) > 0) {
 					nextChild = 2;
 				} else {
 					nextChild = 1;
@@ -453,35 +445,21 @@ public class Node {
 		return inOrderPredecessor;
 	}
 	
-	public int GetNextChildIndexByKey(String key) {
+	public Node GetNextChild(DataObject d0) {
 		int nextChild = -1;
-		if(Data[0].compare(key) > 0) {
+		if(Data[0].compareTo(d0) > 0) {
 			nextChild = 0;
 		} else if(IsTwoNode()) {
 			nextChild = 1;
-		} else if(Data[1].compare(key) > 0) {
+		} else if(Data[1].compareTo(d0) > 0) {
 			nextChild = 1;
 		} else {
 			nextChild = 2;
 		}
 			
-		return nextChild;
+		return Children[nextChild];
 	}
-	
-	public Node GetNextChildNodeByKey(String key) {
-		Node child = null;
-		if(Data[0].compare(key) > 0) {
-			child = Children[0];	
-		} else if(IsTwoNode()) {
-			child = Children[1];
-		} else if(Data[1].compare(key) > 0) {
-			child = Children[1];
-		} else {
-			child = Children[2];
-		}
-		return child;
-	}
-	
+		
 	public int GetClosestThreeNodeSiblingIndex() {
 		int closestThreeNodeSibling = -1;
 		if(Parent.IsThreeNode()) {

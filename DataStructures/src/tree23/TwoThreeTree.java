@@ -18,10 +18,10 @@ public class TwoThreeTree {
 		int matchingKeyIndex = -1;
 		while(!n.IsLeaf() && matchingKeyIndex == -1){
 			if(!n.IsEmpty()){
-				matchingKeyIndex = n.CheckForMatchingKey(d0.Key);
+				matchingKeyIndex = n.CheckForMatch(d0);
 			}
 			if(matchingKeyIndex == -1){
-				n = n.Children[n.GetNextChildIndexByKey(d0.Key)];
+				n = n.GetNextChild(d0);
 			}
 		}
 		if(matchingKeyIndex != -1){
@@ -35,13 +35,14 @@ public class TwoThreeTree {
 
 	public DataObject Query(String key) {
 		System.out.printf("QUERY: \"%s\"\n", key);
+		DataObject comp = new DataObject(null, key);
 		Node n = Root;
 		DataObject d0 = null;
-		int matchingKeyIndex = n.CheckForMatchingKey(key);
+		int matchingKeyIndex = n.CheckForMatch(comp);
 		
 		while(!n.IsLeaf() && matchingKeyIndex == -1) {
-			n = n.Children[n.GetNextChildIndexByKey(key)];
-			matchingKeyIndex = n.CheckForMatchingKey(key);
+			n = n.GetNextChild(comp);
+			matchingKeyIndex = n.CheckForMatch(comp);
 		}
 		if(matchingKeyIndex != -1) {
 			d0 = n.Data[matchingKeyIndex];
@@ -54,13 +55,14 @@ public class TwoThreeTree {
 		
 	public DataObject Delete(String key) {
 		System.out.printf("DELETE: \"%s\"\n", key);
+		DataObject comp = new DataObject(null, key);
 		Node n = Root;
 		DataObject d0 = null;
 		//find matching Node
-		int duplicate = Root.CheckForMatchingKey(key);
+		int duplicate = Root.CheckForMatch(comp);
 		while(duplicate == -1 && !n.IsLeaf()) {
-			n = n.GetNextChildNodeByKey(key);
-			duplicate = n.CheckForMatchingKey(key);
+			n = n.GetNextChild(comp);
+			duplicate = n.CheckForMatch(comp);
 		}
 		if(duplicate == -1) { // not found
 			System.out.printf("DELETE FAIL: DataObject with Key: \"%s\" not found\n", key);
@@ -72,7 +74,7 @@ public class TwoThreeTree {
 				inOrderPredecessorNode.AddAndSort(temp);
 				n = inOrderPredecessorNode;
 			}
-			duplicate = n.CheckForMatchingKey(key);
+			duplicate = n.CheckForMatch(comp);
 			d0 = n.DetatchDataObject(duplicate);
 			n.DefragDataObjectsLeft();
 			if(n.IsEmpty()) {

@@ -1,7 +1,7 @@
 package tree23;
 
 
-public class DataObject {
+public class DataObject implements Comparable<DataObject> {
 	Object Data;
 	String Key;
 	int Count;
@@ -12,11 +12,8 @@ public class DataObject {
 		Count = 1;
 	}
 	
-	public int compare (DataObject d1) {
-		return Key.compareTo(d1.Key);
-	}
-	
-	public int compare (String key) {
-		return Key.compareTo(key);
+	@Override
+	public int compareTo(DataObject arg0) {
+		return Key.compareTo(arg0.Key);
 	}
 }
